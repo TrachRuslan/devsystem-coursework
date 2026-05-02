@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Користувачі | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Список користувачів</h1>
+                <p>Керування зареєстрованими клієнтами</p>
+            </div>
+            <a href="create-user.html" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Додати користувача
+            </a>
+        </header>
+
+        <div class="card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ім'я</th>
+                            <th>Email</th>
+                            <th>Вік</th>
+                            <th>Телефон</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Динамічний вміст -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        async function loadUsers() {
+            const users = await fetchData('/users');
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+            
+            if (users && users.length > 0) {
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${user.id}</td>
+                        <td><strong>${user.name}</strong></td>
+                        <td>${user.email}</td>
+                        <td>${user.age}</td>
+                        <td>${user.phoneNumber || '-'}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <a href="user-details.html?id=${user.id}" class="btn btn-primary btn-sm" title="Деталі">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button onclick="deleteUser(${user.id})" class="btn btn-danger btn-sm" title="Видалити">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Користувачів не знайдено</td></tr>';
+            }
+        }
+
+        async function deleteUser(id) {
+            const success = await deleteData(`/users/${id}`);
+            if (success) loadUsers();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUsers);
+    </script>
+</body>
+</html>

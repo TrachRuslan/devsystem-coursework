@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Аналітика та статистика</h1>
+                <p>Показники ефективності системи</p>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-users"></i> Користувачі</h3>
+                <div class="stat-value" id="s-users">0</div>
+                <p>Зареєстровано в базі</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-shopping-cart"></i> Замовлення</h3>
+                <div class="stat-value" id="s-orders">0</div>
+                <p>Створено за весь час</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-money-bill-wave"></i> Оборот</h3>
+                <div class="stat-value" id="s-revenue">0.00</div>
+                <p>Загальна сума замовлень (грн)</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-tag"></i> Середній чек</h3>
+                <div class="stat-value" id="s-avg">0.00</div>
+                <p>Середня вартість замовлення</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-chart-line"></i> Розподіл за віком</h3>
+            <div id="ageStats" style="margin-top: 1rem;">
+                <!-- Динамічний прогрес-бар для груп віку -->
+                <p>Завантаження даних...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const users = await fetchData('/users');
+            if (users) {
+                document.getElementById('s-users').textContent = users.length;
+                
+                let totalOrders = 0;
+                let totalRevenue = 0;
+                let ages = { '1-18': 0, '19-35': 0, '36-60': 0, '60+': 0 };
+
+                for (const user of users) {
+                    // Статистика віку
+                    if (user.age <= 18) ages['1-18']++;
+                    else if (user.age <= 35) ages['19-35']++;
+                    else if (user.age <= 60) ages['36-60']++;
+                    else ages['60+']++;
+
+                    const orders = await fetchData(`/orders/${user.id}`);
+                    if (orders) {
+                        totalOrders += orders.length;
+                        orders.forEach(o => totalRevenue += o.price);
+                    }
+                }
+
+                document.getElementById('s-orders').textContent = totalOrders;
+                document.getElementById('s-revenue').textContent = totalRevenue.toFixed(2);
+                document.getElementById('s-avg').textContent = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : '0.00';
+
+                // Відображення вікової статистики
+                const ageContainer = document.getElementById('ageStats');
+                ageContainer.innerHTML = '';
+                Object.keys(ages).forEach(key => {
+                    const percent = users.length > 0 ? (ages[key] / users.length * 100).toFixed(0) : 0;
+                    ageContainer.innerHTML += `
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                <span>Група ${key}</span>
+                                <span>${ages[key]} ос. (${percent}%)</span>
+                            </div>
+                            <div style="height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden;">
+                                <div style="width: ${percent}%; height: 100%; background: var(--primary-color);"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

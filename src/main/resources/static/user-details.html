@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі користувача | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Профіль користувача</h1>
+                <p id="profileSubtitle">Завантаження інформації...</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="users.html" class="btn btn-secondary btn-sm" style="background: var(--text-muted); color: white;">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+                <button id="deleteUserBtn" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i> Видалити профіль
+                </button>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-id-card"></i> Особисті дані</h3>
+                <div id="userInfo">
+                    <p><strong>ID:</strong> <span id="u-id">...</span></p>
+                    <p><strong>Ім'я:</strong> <span id="u-name">...</span></p>
+                    <p><strong>Email:</strong> <span id="u-email">...</span></p>
+                    <p><strong>Вік:</strong> <span id="u-age">...</span></p>
+                    <p><strong>Телефон:</strong> <span id="u-phone">...</span></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Статистика користувача</h3>
+                <div class="stat-value" id="userOrderCount">0</div>
+                <p>Замовлень всього</p>
+                <div class="stat-value" style="color: var(--secondary-color);" id="userTotalSpent">0.00</div>
+                <p>Загальна сума (грн)</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3><i class="fas fa-shopping-bag"></i> Замовлення користувача</h3>
+                <a id="addOrderForUser" href="#" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus"></i> Нове замовлення
+                </a>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Товар</th>
+                            <th>Ціна</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userOrdersTable">
+                        <!-- Динамічний вміст -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+
+        async function loadProfile() {
+            if (!userId) {
+                showNotification('ID користувача не вказано', 'error');
+                return;
+            }
+
+            // Оскільки в API немає GET /users/{id}, шукаємо в загальному списку
+            const users = await fetchData('/users');
+            const user = users ? users.find(u => u.id == userId) : null;
+
+            if (user) {
+                document.getElementById('profileSubtitle').textContent = `Перегляд даних клієнта: ${user.name}`;
+                document.getElementById('u-id').textContent = user.id;
+                document.getElementById('u-name').textContent = user.name;
+                document.getElementById('u-email').textContent = user.email;
+                document.getElementById('u-age').textContent = user.age;
+                document.getElementById('u-phone').textContent = user.phoneNumber || 'Не вказано';
+                
+                document.getElementById('addOrderForUser').href = `create-order.html?userId=${user.id}`;
+                document.getElementById('deleteUserBtn').onclick = () => deleteUserProfile(user.id);
+
+                loadUserOrders(user.id);
+            } else {
+                showNotification('Користувача не знайдено', 'error');
+            }
+        }
+
+        async function loadUserOrders(uid) {
+            const orders = await fetchData(`/orders/${uid}`);
+            const tbody = document.getElementById('userOrdersTable');
+            tbody.innerHTML = '';
+            
+            let total = 0;
+            if (orders && orders.length > 0) {
+                orders.forEach(order => {
+                    total += order.price;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.title}</td>
+                        <td><strong>${order.price} грн</strong></td>
+                        <td>
+                            <button onclick="removeOrder(${order.id})" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                document.getElementById('userOrderCount').textContent = orders.length;
+                document.getElementById('userTotalSpent').textContent = total.toFixed(2);
+            } else {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">Замовлень немає</td></tr>';
+            }
+        }
+
+        async function deleteUserProfile(id) {
+            if (await deleteData(`/users/${id}`)) {
+                window.location.href = 'users.html';
+            }
+        }
+
+        async function removeOrder(id) {
+            if (await deleteData(`/orders/${id}`)) {
+                loadUserOrders(userId);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>

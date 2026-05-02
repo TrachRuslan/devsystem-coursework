@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замовлення | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Усі замовлення</h1>
+                <p>Керування замовленнями користувачів</p>
+            </div>
+            <a href="create-order.html" class="btn btn-primary">
+                <i class="fas fa-cart-plus"></i> Нове замовлення
+            </a>
+        </header>
+
+        <div class="card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Клієнт</th>
+                            <th>Товар</th>
+                            <th>Ціна</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allOrdersTable">
+                        <!-- Динамічний вміст -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        async function loadAllOrders() {
+            const users = await fetchData('/users');
+            const tbody = document.getElementById('allOrdersTable');
+            tbody.innerHTML = '';
+
+            if (users) {
+                let hasOrders = false;
+                for (const user of users) {
+                    const orders = await fetchData(`/orders/${user.id}`);
+                    if (orders && orders.length > 0) {
+                        hasOrders = true;
+                        orders.forEach(order => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${order.id}</td>
+                                <td><a href="user-details.html?id=${user.id}">${user.name}</a></td>
+                                <td>${order.title}</td>
+                                <td><strong>${order.price} грн</strong></td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="order-details.html?id=${order.id}&userId=${user.id}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button onclick="deleteOrder(${order.id})" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                }
+                if (!hasOrders) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">Замовлень поки що немає</td></tr>';
+                }
+            }
+        }
+
+        async function deleteOrder(id) {
+            const success = await deleteData(`/orders/${id}`);
+            if (success) loadAllOrders();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAllOrders);
+    </script>
+</body>
+</html>

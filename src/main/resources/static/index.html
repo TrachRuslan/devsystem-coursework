@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Панель керування</h1>
+                <p>Вітаємо в системі управління користувачами та замовленнями</p>
+            </div>
+            <div class="user-profile">
+                <span>Адміністратор</span>
+                <i class="fas fa-user-circle fa-2x"></i>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-users"></i> Користувачі</h3>
+                <div class="stat-value" id="userCount">...</div>
+                <p>Загальна кількість зареєстрованих</p>
+                <a href="users.html" class="btn btn-primary btn-sm mt-4">Перейти до списку</a>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-shopping-cart"></i> Замовлення</h3>
+                <div class="stat-value" id="orderCount">...</div>
+                <p>Всього замовлень в системі</p>
+                <a href="orders.html" class="btn btn-primary btn-sm mt-4">Керувати замовленнями</a>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Активність</h3>
+                <div class="stat-value">24/7</div>
+                <p>Система працює стабільно</p>
+                <a href="statistics.html" class="btn btn-primary btn-sm mt-4">Детальна статистика</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Останні дії</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Час</th>
+                            <th>Подія</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12:45</td>
+                            <td>Створено нового користувача</td>
+                            <td><span class="badge badge-done">Успішно</span></td>
+                        </tr>
+                        <tr>
+                            <td>12:30</td>
+                            <td>Додано замовлення #42</td>
+                            <td><span class="badge badge-done">Виконано</span></td>
+                        </tr>
+                        <tr>
+                            <td>11:15</td>
+                            <td>Оновлено дані профілю</td>
+                            <td><span class="badge badge-new">Нове</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const users = await fetchData('/users');
+            if (users) {
+                document.getElementById('userCount').textContent = users.length;
+                
+                // Оскільки немає прямого ендпоінту /orders/all, підрахуємо замовлення для кожного користувача
+                let totalOrders = 0;
+                for (const user of users) {
+                    const orders = await fetchData(`/orders/${user.id}`);
+                    if (orders) totalOrders += orders.length;
+                }
+                document.getElementById('orderCount').textContent = totalOrders;
+            }
+        });
+    </script>
+</body>
+</html>

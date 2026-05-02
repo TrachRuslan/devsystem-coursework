@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі замовлення | Система управління</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="page-title">
+                <h1>Деталі замовлення</h1>
+                <p id="orderSubtitle">Завантаження...</p>
+            </div>
+            <a href="orders.html" class="btn btn-secondary btn-sm" style="background: var(--text-muted); color: white;">
+                <i class="fas fa-arrow-left"></i> Назад
+            </a>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-shopping-cart"></i> Інформація про замовлення</h3>
+                <div id="orderInfo">
+                    <p><strong>ID замовлення:</strong> <span id="o-id">...</span></p>
+                    <p><strong>Назва товару:</strong> <span id="o-title">...</span></p>
+                    <p><strong>Ціна:</strong> <span id="o-price">...</span> грн</p>
+                    <p><strong>Статус:</strong> <span id="o-status" class="badge badge-new">NEW</span></p>
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                    <button id="markDoneBtn" class="btn btn-success btn-sm">
+                        <i class="fas fa-check"></i> Позначити як виконано
+                    </button>
+                    <button id="deleteOrderBtn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Скасувати замовлення
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-user"></i> Клієнт</h3>
+                <div id="customerSummary">
+                    <p><strong>Ім'я:</strong> <span id="c-name">...</span></p>
+                    <p><strong>Email:</strong> <span id="c-email">...</span></p>
+                    <a id="viewCustomerBtn" href="#" class="btn btn-primary btn-sm mt-4">Переглянути профіль</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Система управління | Курсова робота</p>
+        </footer>
+    </div>
+
+    <div id="notification"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+        const userId = urlParams.get('userId');
+
+        async function loadOrderDetails() {
+            if (!orderId || !userId) {
+                showNotification('Дані замовлення не вказані', 'error');
+                return;
+            }
+
+            const orders = await fetchData(`/orders/${userId}`);
+            const order = orders ? orders.find(o => o.id == orderId) : null;
+
+            const users = await fetchData('/users');
+            const user = users ? users.find(u => u.id == userId) : null;
+
+            if (order && user) {
+                document.getElementById('orderSubtitle').textContent = `Замовлення #${order.id} - ${order.title}`;
+                document.getElementById('o-id').textContent = order.id;
+                document.getElementById('o-title').textContent = order.title;
+                document.getElementById('o-price').textContent = order.price.toFixed(2);
+                
+                document.getElementById('c-name').textContent = user.name;
+                document.getElementById('c-email').textContent = user.email;
+                document.getElementById('viewCustomerBtn').href = `user-details.html?id=${user.id}`;
+                
+                document.getElementById('deleteOrderBtn').onclick = async () => {
+                    if (await deleteData(`/orders/${order.id}`)) window.location.href = 'orders.html';
+                };
+
+                document.getElementById('markDoneBtn').onclick = () => {
+                    const statusBadge = document.getElementById('o-status');
+                    statusBadge.textContent = 'DONE';
+                    statusBadge.className = 'badge badge-done';
+                    showNotification('Статус оновлено (локально)');
+                };
+            } else {
+                showNotification('Замовлення або користувача не знайдено', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadOrderDetails);
+    </script>
+</body>
+</html>
