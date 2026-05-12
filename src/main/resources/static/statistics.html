@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -22,56 +23,61 @@
 
             <div class="stats-grid animate">
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #eef2ff; color: #6366f1;"><i class="fas fa-users"></i></div>
+                    <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--primary);"><i class="fas fa-users"></i></div>
                     <div class="stat-info">
-                        <h3>Активні користувачі</h3>
-                        <div class="value">42</div>
+                        <h3>Користувачі</h3>
+                        <div class="value" id="stat-users-count">0</div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #fdf2f8; color: #db2777;"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="stat-icon" style="background: rgba(244, 63, 94, 0.1); color: var(--accent);"><i class="fas fa-shopping-cart"></i></div>
                     <div class="stat-info">
-                        <h3>Продані товари</h3>
-                        <div class="value">156</div>
+                        <h3>Замовлення</h3>
+                        <div class="value" id="stat-orders-count">0</div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;"><i class="fas fa-chart-bar"></i></div>
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);"><i class="fas fa-dollar-sign"></i></div>
                     <div class="stat-info">
-                        <h3>Конверсія</h3>
-                        <div class="value">12.4%</div>
+                        <h3>Виручка</h3>
+                        <div class="value" id="stat-revenue">0 ₴</div>
                     </div>
+                </div>
+            </div>
+
+            <div class="card animate" style="margin-top: 2rem;">
+                <h3 class="card-title">Аналітика активності</h3>
+                <div class="chart-container">
+                    <canvas id="analyticsChart"></canvas>
                 </div>
             </div>
 
             <div class="grid animate" style="margin-top: 2rem;">
                 <div class="card">
-                    <h3 class="card-title">Розподіл за категоріями</h3>
-                    <div style="height: 200px; display: flex; align-items: flex-end; gap: 20px; padding: 20px 0;">
-                        <div style="flex: 1; background: var(--primary); height: 80%; border-radius: 8px 8px 0 0; position: relative;">
-                            <span style="position: absolute; bottom: -25px; left: 0; font-size: 10px; width: 100%; text-align: center;">Електроніка</span>
-                        </div>
-                        <div style="flex: 1; background: var(--secondary); height: 40%; border-radius: 8px 8px 0 0; position: relative;">
-                            <span style="position: absolute; bottom: -25px; left: 0; font-size: 10px; width: 100%; text-align: center;">Аксесуари</span>
-                        </div>
-                        <div style="flex: 1; background: var(--accent); height: 60%; border-radius: 8px 8px 0 0; position: relative;">
-                            <span style="position: absolute; bottom: -25px; left: 0; font-size: 10px; width: 100%; text-align: center;">Побут. тех.</span>
-                        </div>
+                    <h3 class="card-title">Прогноз зростання</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">На основі поточних даних, очікується стабільне зростання клієнтської бази на 15% у наступному кварталі.</p>
+                    <div style="margin-top: 1.5rem;">
+                        <div class="badge badge-new" style="display: inline-block; margin-bottom: 0.5rem;">Тренд: Позитивний</div>
+                        <p>Наступний прогноз: <strong>+45 замовлень</strong> до кінця місяця.</p>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 class="card-title">Динаміка реєстрацій</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">За останні 7 днів кількість нових користувачів зросла на 15% порівняно з попереднім тижнем.</p>
-                    <div style="margin-top: 2rem;">
-                        <div class="badge badge-new" style="display: inline-block; margin-bottom: 0.5rem;">Тренд: Позитивний</div>
-                        <p>Наступний прогноз: <strong>+20 користувачів</strong> до кінця місяця.</p>
-                    </div>
+                    <h3 class="card-title">Системні сповіщення</h3>
+                    <ul style="color: var(--text-muted); font-size: 0.9rem;">
+                        <li style="margin-bottom: 0.75rem;"><i class="fas fa-check-circle" style="color: var(--success); margin-right: 8px;"></i> Всі сервери працюють стабільно</li>
+                        <li style="margin-bottom: 0.75rem;"><i class="fas fa-sync" style="color: var(--primary); margin-right: 8px;"></i> Дані синхронізовано 5 хв тому</li>
+                        <li><i class="fas fa-shield-alt" style="color: var(--warning); margin-right: 8px;"></i> Рекомендується оновити пароль адміна</li>
+                    </ul>
                 </div>
             </div>
 
-            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+            <footer class="main-footer animate">
                 <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+                <div class="footer-links">
+                    <a href="about.html">Про проект</a>
+                    <a href="contacts.html">Контакти</a>
+                </div>
             </footer>
         </main>
     </div>

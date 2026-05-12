@@ -7,90 +7,174 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div class="bg-glow"></div>
     <div class="app-container">
         <aside class="sidebar" id="sidebar"></aside>
 
         <main class="main-content">
             <header>
                 <div class="page-title animate">
-                    <h1>Панель приладів</h1>
+                    <h1 class="premium-title">Панель приладів</h1>
                     <p>Вітаємо в системі управління ресурсами проекту</p>
                 </div>
                 <div class="user-profile animate">
-                    <button class="btn btn-outline">
+                    <button class="btn btn-outline btn-round">
                         <i class="fas fa-bell"></i>
+                        <span class="notification-dot"></span>
                     </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-user-circle"></i> Адмін
-                    </button>
+                    <div class="profile-pill">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Avatar" class="avatar-sm">
+                        <span>Адмін</span>
+                    </div>
                 </div>
             </header>
 
-            <section class="hero animate">
-                <h2>Керуйте бізнесом ефективно</h2>
-                <p>Наша система дозволяє легко відстежувати користувачів, замовлення та товари в реальному часі.</p>
-                <div class="hero-actions">
-                    <a href="create-user.html" class="btn btn-primary" style="background: white; color: var(--primary);">
-                        <i class="fas fa-plus"></i> Новий користувач
-                    </a>
-                    <a href="about.html" class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color: white; margin-left: 10px;">
-                        Дізнатись більше
-                    </a>
+            <section class="hero-premium animate">
+                <div class="hero-content">
+                    <h2>Керуйте бізнесом <span class="text-gradient">ефективно</span></h2>
+                    <p>Наша система дозволяє легко відстежувати користувачів, замовлення та товари в реальному часі з глибокою аналітикою.</p>
+                    <div class="hero-actions">
+                        <a href="create-user.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus"></i> Новий користувач
+                        </a>
+                        <a href="statistics.html" class="btn btn-glass btn-lg" style="margin-left: 15px;">
+                            <i class="fas fa-chart-line"></i> Глибока аналітика
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-card c1"><i class="fas fa-user-check"></i></div>
+                    <div class="floating-card c2"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="floating-card c3"><i class="fas fa-chart-bar"></i></div>
                 </div>
             </section>
 
-            <div class="stats-grid">
-                <div class="stat-card animate">
-                    <div class="stat-icon" style="background: #eef2ff; color: #6366f1;">
-                        <i class="fas fa-users"></i>
+            <div class="stats-grid-premium">
+                <div class="stat-card-premium animate g-blue">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrap">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> 12%</span>
                     </div>
-                    <div class="stat-info">
+                    <div class="stat-body">
                         <h3>Користувачі</h3>
-                        <div class="value" id="stat-users-count">0</div>
+                        <div class="value counter" id="stat-users-count" data-target="0">0</div>
+                    </div>
+                    <div class="stat-footer">
+                        <div class="progress-bar"><div class="progress" style="width: 70%"></div></div>
                     </div>
                 </div>
-                <div class="stat-card animate">
-                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;">
-                        <i class="fas fa-shopping-cart"></i>
+                <div class="stat-card-premium animate g-purple">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrap">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> 8%</span>
                     </div>
-                    <div class="stat-info">
+                    <div class="stat-body">
                         <h3>Замовлення</h3>
-                        <div class="value" id="stat-orders-count">0</div>
+                        <div class="value counter" id="stat-orders-count" data-target="0">0</div>
+                    </div>
+                    <div class="stat-footer">
+                        <div class="progress-bar"><div class="progress" style="width: 45%"></div></div>
                     </div>
                 </div>
-                <div class="stat-card animate">
-                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;">
-                        <i class="fas fa-dollar-sign"></i>
+                <div class="stat-card-premium animate g-rose">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrap">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> 24%</span>
                     </div>
-                    <div class="stat-info">
+                    <div class="stat-body">
                         <h3>Виручка</h3>
                         <div class="value" id="stat-revenue">0 ₴</div>
                     </div>
+                    <div class="stat-footer">
+                        <div class="progress-bar"><div class="progress" style="width: 85%"></div></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid">
-                <div class="card animate">
-                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
-                    <h3 class="card-title">Швидкий старт</h3>
-                    <p>Додайте першого користувача та створіть замовлення всього за кілька кліків.</p>
+            <div class="dashboard-grid">
+                <div class="card animate glass-card chart-main">
+                    <div class="card-header-flex">
+                        <h3 class="card-title"><i class="fas fa-chart-area"></i> Огляд активності</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon active">Тиждень</button>
+                            <button class="btn-icon">Місяць</button>
+                        </div>
+                    </div>
+                    <div class="chart-container-large">
+                        <canvas id="dashboardMainChart"></canvas>
+                    </div>
                 </div>
-                <div class="card animate">
-                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="card-title">Безпека даних</h3>
-                    <p>Ми використовуємо сучасні стандарти захисту для збереження вашої конфіденційної інформації.</p>
-                </div>
-                <div class="card animate">
-                    <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
-                    <h3 class="card-title">Аналітика</h3>
-                    <p>Детальна статистика допоможе вам приймати правильні бізнес-рішення.</p>
+
+                <div class="card animate glass-card side-widget">
+                    <h3 class="card-title"><i class="fas fa-tasks"></i> Швидкі дії</h3>
+                    <div class="quick-actions-grid">
+                        <a href="create-product.html" class="action-item">
+                            <div class="action-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <span>Додати товар</span>
+                        </a>
+                        <a href="users.html" class="action-item">
+                            <div class="action-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <span>Менеджер</span>
+                        </a>
+                        <a href="admin.html" class="action-item">
+                            <div class="action-icon" style="background: rgba(244, 63, 94, 0.1); color: #f43f5e;">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span>Налаштування</span>
+                        </a>
+                        <a href="contacts.html" class="action-item">
+                            <div class="action-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span>Підтримка</span>
+                        </a>
+                    </div>
+                    
+                    <div class="premium-banner">
+                        <h4>DevSystem Pro</h4>
+                        <p>Отримайте доступ до розширених функцій</p>
+                        <button class="btn btn-primary btn-sm">Оновити</button>
+                    </div>
                 </div>
             </div>
 
-            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+            <div class="grid" style="margin-top: 2rem;">
+                <div class="card animate glass-card hover-lift">
+                    <div class="card-icon-modern"><i class="fas fa-bolt"></i></div>
+                    <h3 class="card-title">Швидкість</h3>
+                    <p>Оптимізована продуктивність для миттєвого відгуку системи.</p>
+                </div>
+                <div class="card animate glass-card hover-lift">
+                    <div class="card-icon-modern"><i class="fas fa-lock"></i></div>
+                    <h3 class="card-title">Безпека</h3>
+                    <p>Багаторівневий захист ваших корпоративних даних.</p>
+                </div>
+                <div class="card animate glass-card hover-lift">
+                    <div class="card-icon-modern"><i class="fas fa-magic"></i></div>
+                    <h3 class="card-title">Гнучкість</h3>
+                    <p>Налаштовуйте систему під потреби вашого бізнесу.</p>
+                </div>
+            </div>
+
+            <footer class="main-footer animate">
                 <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+                <div class="footer-links">
+                    <a href="about.html">Про проект</a>
+                    <a href="contacts.html">Контакти</a>
+                </div>
             </footer>
         </main>
     </div>
