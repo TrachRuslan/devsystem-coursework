@@ -3,159 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Деталі користувача | Система управління</title>
+    <title>DevSystem | Деталі користувача</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar" id="sidebar"></nav>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="page-title">
-                <h1>Профіль користувача</h1>
-                <p id="profileSubtitle">Завантаження інформації...</p>
-            </div>
-            <div style="display: flex; gap: 0.5rem;">
-                <a href="users.html" class="btn btn-secondary btn-sm" style="background: var(--text-muted); color: white;">
-                    <i class="fas fa-arrow-left"></i> Назад
-                </a>
-                <button id="deleteUserBtn" class="btn btn-danger btn-sm">
-                    <i class="fas fa-trash"></i> Видалити профіль
-                </button>
-            </div>
-        </header>
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Профіль клієнта</h1>
+                    <p>Детальна інформація та історія замовлень</p>
+                </div>
+                <div class="header-actions animate">
+                    <a href="users.html" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </a>
+                </div>
+            </header>
 
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-id-card"></i> Особисті дані</h3>
-                <div id="userInfo">
-                    <p><strong>ID:</strong> <span id="u-id">...</span></p>
-                    <p><strong>Ім'я:</strong> <span id="u-name">...</span></p>
-                    <p><strong>Email:</strong> <span id="u-email">...</span></p>
-                    <p><strong>Вік:</strong> <span id="u-age">...</span></p>
-                    <p><strong>Телефон:</strong> <span id="u-phone">...</span></p>
+            <div class="grid">
+                <div class="card animate">
+                    <h3 class="card-title">Особисті дані</h3>
+                    <div id="user-info" style="margin-top: 1rem;">
+                        <p>Завантаження інформації...</p>
+                    </div>
+                </div>
+
+                <div class="card animate">
+                    <h3 class="card-title">Створити замовлення</h3>
+                    <form id="create-order-form">
+                        <div class="form-group">
+                            <label>Назва товару/послуги</label>
+                            <input type="text" name="title" required placeholder="Напр. Курс JS">
+                        </div>
+                        <div class="form-group">
+                            <label>Ціна (₴)</label>
+                            <input type="number" name="price" required placeholder="0.00" step="0.01">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">Створити замовлення</button>
+                    </form>
                 </div>
             </div>
 
-            <div class="card">
-                <h3><i class="fas fa-chart-line"></i> Статистика користувача</h3>
-                <div class="stat-value" id="userOrderCount">0</div>
-                <p>Замовлень всього</p>
-                <div class="stat-value" style="color: var(--secondary-color);" id="userTotalSpent">0.00</div>
-                <p>Загальна сума (грн)</p>
+            <div class="card animate" style="margin-top: 2rem;">
+                <h3 class="card-title">Історія замовлень</h3>
+                <div id="user-orders-table">
+                    <p>Немає замовлень.</p>
+                </div>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3><i class="fas fa-shopping-bag"></i> Замовлення користувача</h3>
-                <a id="addOrderForUser" href="#" class="btn btn-success btn-sm">
-                    <i class="fas fa-plus"></i> Нове замовлення
-                </a>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Товар</th>
-                            <th>Ціна</th>
-                            <th>Дії</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userOrdersTable">
-                        <!-- Динамічний вміст -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Система управління | Курсова робота</p>
-        </footer>
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій</p>
+            </footer>
+        </main>
     </div>
 
     <div id="notification"></div>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-    </div>
-
     <script src="app.js"></script>
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+            if (!userId) return;
 
-        async function loadProfile() {
-            if (!userId) {
-                showNotification('ID користувача не вказано', 'error');
-                return;
-            }
-
-            // Оскільки в API немає GET /users/{id}, шукаємо в загальному списку
-            const users = await fetchData('/users');
-            const user = users ? users.find(u => u.id == userId) : null;
-
-            if (user) {
-                document.getElementById('profileSubtitle').textContent = `Перегляд даних клієнта: ${user.name}`;
-                document.getElementById('u-id').textContent = user.id;
-                document.getElementById('u-name').textContent = user.name;
-                document.getElementById('u-email').textContent = user.email;
-                document.getElementById('u-age').textContent = user.age;
-                document.getElementById('u-phone').textContent = user.phoneNumber || 'Не вказано';
-                
-                document.getElementById('addOrderForUser').href = `create-order.html?userId=${user.id}`;
-                document.getElementById('deleteUserBtn').onclick = () => deleteUserProfile(user.id);
-
-                loadUserOrders(user.id);
-            } else {
-                showNotification('Користувача не знайдено', 'error');
-            }
-        }
-
-        async function loadUserOrders(uid) {
-            const orders = await fetchData(`/orders/${uid}`);
-            const tbody = document.getElementById('userOrdersTable');
-            tbody.innerHTML = '';
+            // Load User Data
+            const user = await fetchData(`/users`); 
+            const currentUser = user.find(u => u.id == userId);
             
-            let total = 0;
-            if (orders && orders.length > 0) {
-                orders.forEach(order => {
-                    total += order.price;
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${order.id}</td>
-                        <td>${order.title}</td>
-                        <td><strong>${order.price} грн</strong></td>
-                        <td>
-                            <button onclick="removeOrder(${order.id})" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
+            if (currentUser) {
+                document.getElementById('user-info').innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">Ім'я: <strong>${currentUser.name}</strong></div>
+                    <div style="margin-bottom: 0.5rem;">Email: <strong>${currentUser.email}</strong></div>
+                    <div style="margin-bottom: 0.5rem;">Телефон: <strong>${currentUser.phoneNumber || '-'}</strong></div>
+                    <div style="margin-bottom: 0.5rem;">Вік: <strong>${currentUser.age}</strong></div>
+                `;
+            }
+
+            // Load Orders
+            const loadOrders = async () => {
+                const orders = await fetchData(`/orders/${userId}`);
+                if (orders && orders.length > 0) {
+                    document.getElementById('user-orders-table').innerHTML = `
+                        <div class="table-container" style="box-shadow: none;">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Ціна</th>
+                                        <th>Дії</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${orders.map(o => `
+                                        <tr>
+                                            <td>${o.title}</td>
+                                            <td>${o.price} ₴</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteOrderLocally(${o.id})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
                     `;
-                    tbody.appendChild(tr);
+                }
+            };
+            loadOrders();
+
+            window.deleteOrderLocally = async (id) => {
+                if (!confirm('Видалити замовлення?')) return;
+                await fetch(`${API_URL}/orders/${id}`, { method: 'DELETE' });
+                showNotification('Замовлення видалено');
+                loadOrders();
+            };
+
+            // Order Form
+            document.getElementById('create-order-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData.entries());
+                
+                const res = await fetch(`${API_URL}/orders/${userId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
-                document.getElementById('userOrderCount').textContent = orders.length;
-                document.getElementById('userTotalSpent').textContent = total.toFixed(2);
-            } else {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center">Замовлень немає</td></tr>';
-            }
-        }
-
-        async function deleteUserProfile(id) {
-            if (await deleteData(`/users/${id}`)) {
-                window.location.href = 'users.html';
-            }
-        }
-
-        async function removeOrder(id) {
-            if (await deleteData(`/orders/${id}`)) {
-                loadUserOrders(userId);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', loadProfile);
+                if (res.ok) {
+                    showNotification('Замовлення успішно створено');
+                    e.target.reset();
+                    loadOrders();
+                }
+            });
+        });
     </script>
 </body>
 </html>

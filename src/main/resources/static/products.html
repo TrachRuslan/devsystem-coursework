@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevSystem | Замовлення</title>
+    <title>DevSystem | Товари</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,14 +15,19 @@
         <main class="main-content">
             <header>
                 <div class="page-title animate">
-                    <h1>Керування замовленнями</h1>
-                    <p>Моніторинг продажів та виконання запитів</p>
+                    <h1>Каталог товарів</h1>
+                    <p>Перегляд та управління асортиментом</p>
+                </div>
+                <div class="header-actions animate">
+                    <a href="create-product.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Додати товар
+                    </a>
                 </div>
             </header>
 
-            <div id="orders-list" class="animate">
-                <!-- Замовлення завантажуються динамічно -->
-                <p>Завантаження замовлень...</p>
+            <div class="grid" id="products-grid">
+                <!-- Картки товарів завантажуються через app.js -->
+                <p class="animate">Завантаження товарів...</p>
             </div>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">

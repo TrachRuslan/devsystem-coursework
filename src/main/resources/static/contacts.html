@@ -3,76 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Контакти | Система управління</title>
+    <title>DevSystem | Контакти</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar" id="sidebar"></nav>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="page-title">
-                <h1>Контакти</h1>
-                <p>Зв'язок з розробником та підтримкою</p>
-            </div>
-        </header>
-
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-envelope"></i> Зворотний зв'язок</h3>
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="c-name">Ваше ім'я</label>
-                        <input type="text" id="c-name" placeholder="Введіть ім'я" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="c-subject">Тема</label>
-                        <input type="text" id="c-subject" placeholder="Суть звернення" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="c-msg">Повідомлення</label>
-                        <textarea id="c-msg" rows="4" placeholder="Ваш текст тут..." required style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.75rem;"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-paper-plane"></i> Надіслати
-                    </button>
-                </form>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-info-circle"></i> Наші контакти</h3>
-                <div style="margin-top: 1rem; line-height: 2;">
-                    <p><i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i> м. Київ, пр-т Перемоги, 37</p>
-                    <p><i class="fas fa-phone" style="color: var(--primary-color);"></i> +38 (044) 123-45-67</p>
-                    <p><i class="fas fa-envelope-open-text" style="color: var(--primary-color);"></i> support@system.ua</p>
-                    <p><i class="fas fa-globe" style="color: var(--primary-color);"></i> www.management-system.ua</p>
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Зворотний зв'язок</h1>
+                    <p>Зв'яжіться з нами для підтримки або пропозицій</p>
                 </div>
-                
-                <h4 class="mt-4">Соціальні мережі:</h4>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 1.5rem;">
-                    <a href="#" style="color: #3b5998;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="color: #e1306c;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="color: #0088cc;"><i class="fab fa-telegram"></i></a>
-                    <a href="#" style="color: #333;"><i class="fab fa-github"></i></a>
+            </header>
+
+            <div class="grid">
+                <div class="card animate">
+                    <h3 class="card-title">Контактна інформація</h3>
+                    <div style="margin: 1.5rem 0;">
+                        <div style="display: flex; gap: 15px; margin-bottom: 1rem;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                            <span>м. Київ, вул. Університетська, 1</span>
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-bottom: 1rem;">
+                            <i class="fas fa-phone" style="color: var(--primary);"></i>
+                            <span>+380 44 123 45 67</span>
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-bottom: 1rem;">
+                            <i class="fas fa-envelope" style="color: var(--primary);"></i>
+                            <span>support@devsystem.com</span>
+                        </div>
+                    </div>
+                    <div class="social-links" style="display: flex; gap: 15px; font-size: 1.5rem; color: var(--primary);">
+                        <i class="fab fa-facebook-square"></i>
+                        <i class="fab fa-linkedin"></i>
+                        <i class="fab fa-github"></i>
+                    </div>
+                </div>
+
+                <div class="card animate">
+                    <h3 class="card-title">Напишіть нам</h3>
+                    <form onsubmit="event.preventDefault(); showNotification('Повідомлення надіслано!'); this.reset();">
+                        <div class="form-group">
+                            <label>Ваше ім'я</label>
+                            <input type="text" placeholder="Ім'я" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="example@mail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Повідомлення</label>
+                            <textarea rows="3" placeholder="Ваше запитання..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">Надіслати</button>
+                    </form>
                 </div>
             </div>
-        </div>
 
-        <footer>
-            <p>&copy; 2026 Система управління | Курсова робота</p>
-        </footer>
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+            </footer>
+        </main>
     </div>
 
     <div id="notification"></div>
     <script src="app.js"></script>
-    <script>
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            showNotification('Повідомлення надіслано! (симуляція)');
-            e.target.reset();
-        });
-    </script>
 </body>
 </html>

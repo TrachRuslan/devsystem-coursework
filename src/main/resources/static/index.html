@@ -3,105 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд | Система управління</title>
+    <title>DevSystem | Головна</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar" id="sidebar"></nav>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="page-title">
-                <h1>Панель керування</h1>
-                <p>Вітаємо в системі управління користувачами та замовленнями</p>
-            </div>
-            <div class="user-profile">
-                <span>Адміністратор</span>
-                <i class="fas fa-user-circle fa-2x"></i>
-            </div>
-        </header>
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Панель приладів</h1>
+                    <p>Вітаємо в системі управління ресурсами проекту</p>
+                </div>
+                <div class="user-profile animate">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-user-circle"></i> Адмін
+                    </button>
+                </div>
+            </header>
 
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-users"></i> Користувачі</h3>
-                <div class="stat-value" id="userCount">...</div>
-                <p>Загальна кількість зареєстрованих</p>
-                <a href="users.html" class="btn btn-primary btn-sm mt-4">Перейти до списку</a>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-shopping-cart"></i> Замовлення</h3>
-                <div class="stat-value" id="orderCount">...</div>
-                <p>Всього замовлень в системі</p>
-                <a href="orders.html" class="btn btn-primary btn-sm mt-4">Керувати замовленнями</a>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-clock"></i> Активність</h3>
-                <div class="stat-value">24/7</div>
-                <p>Система працює стабільно</p>
-                <a href="statistics.html" class="btn btn-primary btn-sm mt-4">Детальна статистика</a>
-            </div>
-        </div>
+            <section class="hero animate">
+                <h2>Керуйте бізнесом ефективно</h2>
+                <p>Наша система дозволяє легко відстежувати користувачів, замовлення та товари в реальному часі.</p>
+                <div class="hero-actions">
+                    <a href="create-user.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+                        <i class="fas fa-plus"></i> Новий користувач
+                    </a>
+                    <a href="about.html" class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color: white; margin-left: 10px;">
+                        Дізнатись більше
+                    </a>
+                </div>
+            </section>
 
-        <div class="card">
-            <h3><i class="fas fa-history"></i> Останні дії</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Час</th>
-                            <th>Подія</th>
-                            <th>Статус</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>12:45</td>
-                            <td>Створено нового користувача</td>
-                            <td><span class="badge badge-done">Успішно</span></td>
-                        </tr>
-                        <tr>
-                            <td>12:30</td>
-                            <td>Додано замовлення #42</td>
-                            <td><span class="badge badge-done">Виконано</span></td>
-                        </tr>
-                        <tr>
-                            <td>11:15</td>
-                            <td>Оновлено дані профілю</td>
-                            <td><span class="badge badge-new">Нове</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="stats-grid">
+                <div class="stat-card animate">
+                    <div class="stat-icon" style="background: #eef2ff; color: #6366f1;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Користувачі</h3>
+                        <div class="value" id="stat-users-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-card animate">
+                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Замовлення</h3>
+                        <div class="value" id="stat-orders-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-card animate">
+                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Виручка</h3>
+                        <div class="value" id="stat-revenue">0 ₴</div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <footer>
-            <p>&copy; 2026 Система управління | Курсова робота</p>
-        </footer>
+            <div class="grid">
+                <div class="card animate">
+                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                    <h3 class="card-title">Швидкий старт</h3>
+                    <p>Додайте першого користувача та створіть замовлення всього за кілька кліків.</p>
+                </div>
+                <div class="card animate">
+                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="card-title">Безпека даних</h3>
+                    <p>Ми використовуємо сучасні стандарти захисту для збереження вашої конфіденційної інформації.</p>
+                </div>
+                <div class="card animate">
+                    <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3 class="card-title">Аналітика</h3>
+                    <p>Детальна статистика допоможе вам приймати правильні бізнес-рішення.</p>
+                </div>
+            </div>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+            </footer>
+        </main>
     </div>
 
     <div id="notification"></div>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-    </div>
-
     <script src="app.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const users = await fetchData('/users');
-            if (users) {
-                document.getElementById('userCount').textContent = users.length;
-                
-                // Оскільки немає прямого ендпоінту /orders/all, підрахуємо замовлення для кожного користувача
-                let totalOrders = 0;
-                for (const user of users) {
-                    const orders = await fetchData(`/orders/${user.id}`);
-                    if (orders) totalOrders += orders.length;
-                }
-                document.getElementById('orderCount').textContent = totalOrders;
-            }
-        });
-    </script>
 </body>
 </html>

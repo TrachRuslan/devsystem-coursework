@@ -3,57 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Про проєкт | Система управління</title>
+    <title>DevSystem | Про проект</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar" id="sidebar"></nav>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="page-title">
-                <h1>Про проєкт</h1>
-                <p>Інформація про курсову роботу</p>
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Про проект</h1>
+                    <p>Інформація про курсову роботу та використані технології</p>
+                </div>
+            </header>
+
+            <div class="card animate">
+                <h3 class="card-title">Система управління ресурсами "DevSystem"</h3>
+                <p>Цей проект є курсовою роботою з дисципліни <strong>"Веб-технології та веб-програмування"</strong>. Основна мета системи — надати зручний інтерфейс для адміністрування бази даних користувачів, товарів та замовлень.</p>
+                
+                <h4 style="margin: 1.5rem 0 1rem;">Технологічний стек:</h4>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-muted);">
+                    <li><strong>Backend:</strong> Java Spring Boot, Spring Data JPA</li>
+                    <li><strong>Database:</strong> PostgreSQL</li>
+                    <li><strong>Frontend:</strong> HTML5, CSS3 (Modern UI/UX), Vanilla JavaScript</li>
+                    <li><strong>API:</strong> RESTful API, Fetch API</li>
+                </ul>
+
+                <h4 style="margin: 1.5rem 0 1rem;">Основні можливості:</h4>
+                <div class="grid">
+                    <div class="card" style="padding: 1.5rem;">
+                        <i class="fas fa-database" style="color: var(--primary);"></i>
+                        <p style="margin-top: 10px;">Повний цикл CRUD операцій для користувачів.</p>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <i class="fas fa-boxes" style="color: var(--secondary);"></i>
+                        <p style="margin-top: 10px;">Каталог товарів з можливістю додавання нових позицій.</p>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <i class="fas fa-receipt" style="color: var(--accent);"></i>
+                        <p style="margin-top: 10px;">Обробка замовлень та прив'язка їх до клієнтів.</p>
+                    </div>
+                </div>
             </div>
-        </header>
 
-        <div class="card">
-            <h3><i class="fas fa-file-alt"></i> Опис системи</h3>
-            <p>Даний проєкт є курсовою роботою на тему <strong>"Система управління користувачами та замовленнями"</strong>. Система розроблена для автоматизації процесів обліку клієнтів та їхніх покупок.</p>
-            
-            <h4 class="mt-4">Використані технології:</h4>
-            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
-                <li><strong>Backend:</strong> Java 17, Spring Boot, Spring Data JPA</li>
-                <li><strong>Database:</strong> PostgreSQL</li>
-                <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript, Fetch API</li>
-                <li><strong>Icons:</strong> Font Awesome</li>
-                <li><strong>Fonts:</strong> Google Inter Font</li>
-            </ul>
-
-            <h4 class="mt-4">Основні можливості:</h4>
-            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
-                <li>Реєстрація та повне керування профілями користувачів.</li>
-                <li>Створення замовлень та прив'язка їх до конкретних клієнтів.</li>
-                <li>Аналітичний дашборд з ключовими показниками системи.</li>
-                <li>Автоматичний розрахунок фінансової статистики.</li>
-                <li>Адаптивний дизайн для зручної роботи на різних пристроях.</li>
-            </ul>
-        </div>
-
-        <div class="card mt-4">
-            <h3><i class="fas fa-graduation-cap"></i> Академічна інформація</h3>
-            <p><strong>Тема:</strong> Розробка веб-орієнтованої інформаційної системи управління клієнтською базою.</p>
-            <p><strong>Дисципліна:</strong> Об'єктно-орієнтоване програмування / Веб-технології.</p>
-            <p><strong>Рік виконання:</strong> 2026</p>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Система управління | Курсова робота</p>
-        </footer>
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+            </footer>
+        </main>
     </div>
 
+    <div id="notification"></div>
     <script src="app.js"></script>
 </body>
 </html>

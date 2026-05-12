@@ -3,84 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Адмін панель | Система управління</title>
+    <title>DevSystem | Адмін панель</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav class="sidebar" id="sidebar"></nav>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="page-title">
-                <h1>Панель адміністратора</h1>
-                <p>Налаштування та керування ресурсами системи</p>
-            </div>
-        </header>
-
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-tools"></i> Системні налаштування</h3>
-                <div class="form-group">
-                    <label>Назва системи</label>
-                    <input type="text" value="System Management v1.0">
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Адміністративна панель</h1>
+                    <p>Налаштування системи та керування доступом</p>
                 </div>
-                <div class="form-group">
-                    <label>Email адміністратора</label>
-                    <input type="email" value="admin@system.com">
+            </header>
+
+            <div class="grid">
+                <div class="card animate">
+                    <h3 class="card-title"><i class="fas fa-cog"></i> Конфігурація</h3>
+                    <div class="form-group">
+                        <label>Назва системи</label>
+                        <input type="text" value="DevSystem v2.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Режим обслуговування</label>
+                        <select>
+                            <option value="off">Вимкнено</option>
+                            <option value="on">Увімкнено</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="showNotification('Налаштування збережено')">Зберегти</button>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="showNotification('Налаштування збережено (локально)')">
-                    Зберегти зміни
-                </button>
+
+                <div class="card animate">
+                    <h3 class="card-title"><i class="fas fa-server"></i> Стан сервера</h3>
+                    <p style="margin-bottom: 0.5rem;">База даних: <span class="badge badge-new">PostgreSQL (Connected)</span></p>
+                    <p style="margin-bottom: 0.5rem;">Час роботи: <strong>14 днів 5 год.</strong></p>
+                    <p>Використання пам'яті: <strong>124MB / 512MB</strong></p>
+                    <div style="margin-top: 1.5rem;">
+                        <button class="btn btn-danger btn-sm" onclick="showNotification('Дія обмежена', 'error')">Перезавантажити</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3><i class="fas fa-database"></i> База даних</h3>
-                <p>Статус: <span class="badge badge-done">Connected</span></p>
-                <p style="margin-top: 1rem;">Тип: <strong>PostgreSQL</strong></p>
-                <p>Хост: <code>localhost:5432</code></p>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn btn-danger btn-sm" onclick="showNotification('Очищення не дозволено в демо-режимі', 'error')">
-                        <i class="fas fa-trash-alt"></i> Очистити кеш
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3><i class="fas fa-user-shield"></i> Керування доступом</h3>
-            <div class="table-container">
+            <div class="table-container animate" style="margin-top: 2rem;">
+                <h3 style="padding: 1.5rem; border-bottom: 1px solid var(--border);">Логи системних подій</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Користувач</th>
-                            <th>Роль</th>
-                            <th>Останній вхід</th>
-                            <th>Дії</th>
+                            <th>Час</th>
+                            <th>Тип</th>
+                            <th>Подія</th>
+                            <th>Статус</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>admin_root</strong></td>
-                            <td><span class="badge badge-done" style="background: #ede9fe; color: #7c3aed;">Super Admin</span></td>
-                            <td>Сьогодні, 10:20</td>
-                            <td><button class="btn btn-sm">Редагувати</button></td>
+                            <td>15:12:04</td>
+                            <td>INFO</td>
+                            <td>Завантаження модуля 'Orders'</td>
+                            <td><span class="badge badge-new">OK</span></td>
                         </tr>
                         <tr>
-                            <td>manager_01</td>
-                            <td><span class="badge badge-new">Manager</span></td>
-                            <td>Вчора, 18:45</td>
-                            <td><button class="btn btn-sm">Редагувати</button></td>
+                            <td>14:55:10</td>
+                            <td>AUTH</td>
+                            <td>Вхід користувача 'admin'</td>
+                            <td><span class="badge badge-new">Success</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <footer>
-            <p>&copy; 2026 Система управління | Курсова робота</p>
-        </footer>
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій- Трач Руслан</p>
+            </footer>
+        </main>
     </div>
 
     <div id="notification"></div>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSystem | Відгуки</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <header>
+                <div class="page-title animate">
+                    <h1>Відгуки клієнтів</h1>
+                    <p>Що про нас говорять наші користувачі</p>
+                </div>
+            </header>
+
+            <div class="grid">
+                <div class="card animate">
+                    <div style="color: #fbbf24; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 1rem;">"Чудова система! Дуже допомогла в автоматизації наших замовлень. Інтерфейс інтуїтивно зрозумілий."</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">О</div>
+                        <div>
+                            <h4 style="font-size: 0.9rem;">Станіслав Б.</h4>
+                            <p style="font-size: 0.75rem; color: var(--text-muted);">Manager at TechCorp</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card animate">
+                    <div style="color: #fbbf24; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 1rem;">"Хороший функціонал для курсового проекту. Все працює швидко через Fetch API."</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">М</div>
+                        <div>
+                            <h4 style="font-size: 0.9rem;">Марія К.</h4>
+                            <p style="font-size: 0.75rem; color: var(--text-muted);">Студентка</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="card animate" style="margin-top: 2rem;">
+                <h3 class="card-title">Залишити свій відгук</h3>
+                <form onsubmit="event.preventDefault(); showNotification('Дякуємо за ваш відгук!'); this.reset();">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" placeholder="Ваші враження..."></textarea>
+                    </div>
+                    <button class="btn btn-primary">Надіслати відгук</button>
+                </form>
+            </div>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p>&copy; 2026 DevSystem - Курсова робота з Веб-технологій - Трач Руслан</p>
+            </footer>
+        </main>
+    </div>
+
+    <div id="notification"></div>
+    <script src="app.js"></script>
+</body>
+</html>
